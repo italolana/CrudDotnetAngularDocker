@@ -1,0 +1,31 @@
+version: '3.4'
+
+services:
+  crudapi:
+    image: crudapi
+    build:
+      context: .
+      dockerfile: CRUDAPI/Dockerfile
+    ports:
+      - "5000:80"
+    depends_on:
+      - postgresdb
+
+  postgresdb:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: customerdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: italoLopsT3st3@
+    ports:
+      - "5432:5432"
+
+  appangular:
+    image: appangular
+    build:
+      context: ./AppAngular/customer-app
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - crudapi
